@@ -35,21 +35,8 @@ def read():
       **read_th(TH1_PIN),
       'outside': read_th(TH2_PIN),
       'humanDoorStatus': 'CLOSED' if read_oc(OC3_PIN) else 'OPEN'
+      #'chickenDoorStatus': 'CLOSED', 'OPEN (PARTIAL)', 'OPEN (TOTAL)'
     }
-    #,
-    # 'hdoorStatus': 'OPEN/CLOSED'
-    # 'cdoorStatus': 'OPEN/?/CLOSED'
-
-    # hdoorStatus OPEN/CLOSED is sementicaly interesting but what is open ? Is a bad closed door open ? In reality the door is closed or not closed
-    # hdoorClosed: true/false
-    # for cdoor, we have open, closed and "not closed, not open". "Unknown" is not really exact, it's like "I can't read sensors"
-    # We can assign a "moving" or "opening" "closing", but it's not true if the door is blocked. The reality is "between" closed and open
-    # We will not create status like "open", "closed", "between" ... And other thing : grafana needs number, so we will have 1, 2, 3 ... not understandable (but can be good transitions in a graph)
-    # So better to have boolean metric like open ? 0 or 1
-    # To do simple, we keep the logic : is open ? is closed ? Other, we don't know ...
-    # Else closed open full-open
-    # cdoorClosed: true/false
-    # cdoorOpen: true/false
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
