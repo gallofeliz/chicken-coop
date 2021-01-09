@@ -8,11 +8,11 @@ services:
     ports:
       - "80:8080"
     environment:
-      - TH1_PIN: 2
-      - TH2_PIN: 10
-      - OC1_PIN: 15
-      - OC2_PIN: 18
-      - OC3_PIN: 14
+      TH1_PIN: "2"
+      TH2_PIN: "10"
+      OC1_PIN: "15"
+      OC2_PIN: "18"
+      OC3_PIN: "14"
     devices:
       - "/dev/gpiomem:/dev/gpiomem"
     cap_add:

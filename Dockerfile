@@ -7,6 +7,6 @@ RUN pip install RPi.GPIO
 
 WORKDIR /app
 
-ADD main.py
+ADD main.py .
 
 CMD ./main.py

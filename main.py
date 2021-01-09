@@ -7,9 +7,13 @@ port = 8080
 GPIO.setmode(GPIO.BCM)
 
 DHT_SENSOR = Adafruit_DHT.DHT22
-TH1_PIN = os.environ['TH1_PIN']
-TH2_PIN = os.environ['TH2_PIN']
-OC3_PIN = os.environ['OC3_PIN']
+TH1_PIN = int(os.environ['TH1_PIN'])
+TH2_PIN = int(os.environ['TH2_PIN'])
+OC3_PIN = int(os.environ['OC3_PIN'])
+
+GPIO.setup(TH1_PIN, GPIO.IN)
+GPIO.setup(TH2_PIN, GPIO.IN)
+GPIO.setup(OC3_PIN, GPIO.IN)
 
 def read_th(pin):
   humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, pin)
@@ -27,7 +31,7 @@ def read_oc(pin):
   return GPIO.input(pin) == 0
 
 def read():
-    data = {
+    return {
       **read_th(TH1_PIN),
       'outside': read_th(TH2_PIN),
       'humanDoorStatus': 'CLOSED' if read_oc(OC3_PIN) else 'OPEN'
@@ -49,10 +53,7 @@ def read():
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        sMac = urllib.parse.urlparse(self.path).path[1:]
-        print('Requested ' + sMac)
-
-        if (sMac == 'favicon.ico'):
+        if (self.path == '/favicon.ico'):
             print('Skipped')
             return
 
