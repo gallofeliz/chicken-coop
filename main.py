@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import socketserver, http.server, urllib.parse, json, time, os, re, threading, datetime, Adafruit_DHT
+import socketserver, http.server, json, os, Adafruit_DHT
 import RPi.GPIO as GPIO
 port = 8080
 
@@ -9,6 +9,7 @@ GPIO.setmode(GPIO.BCM)
 DHT_SENSOR = Adafruit_DHT.DHT22
 TH1_PIN = os.environ['TH1_PIN']
 TH2_PIN = os.environ['TH2_PIN']
+OC3_PIN = os.environ['OC3_PIN']
 
 def read_th(pin):
   humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, pin)
@@ -28,7 +29,8 @@ def read_oc(pin):
 def read():
     data = {
       **read_th(TH1_PIN),
-      'outside': read_th(TH2_PIN)
+      'outside': read_th(TH2_PIN),
+      'humanDoorStatus': 'CLOSED' if read_oc(OC3_PIN) else 'OPEN'
     }
     #,
     # 'hdoorStatus': 'OPEN/CLOSED'
