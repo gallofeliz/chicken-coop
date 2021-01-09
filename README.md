@@ -1,6 +1,6 @@
-# Chicken Coop Guard
+# Chicken Coop (Guard)
 
-![schema](./schema.jpg "Schema")
+Schema in schema.xml (how to preview here ?)
 
 ## API
 
