@@ -1,10 +1,8 @@
 version: "3.5"
-
 services:
-
-  main:
+  agent:
     restart: unless-stopped
-    build: .
+    build: ./agent
     ports:
       - "80:8080"
     environment:
