@@ -41,10 +41,10 @@ def read_oc(pin):
 def read():
     chickenDoorStatus = 'OPEN (PARTIAL)'
 
-    if read(OC1_PIN):
+    if read_oc(OC1_PIN):
       chickenDoorStatus = 'CLOSED'
 
-    if read(OC2_PIN):
+    if read_oc(OC2_PIN):
       chickenDoorStatus = 'OPEN (TOTAL)'
 
     return {
