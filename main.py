@@ -9,10 +9,14 @@ GPIO.setmode(GPIO.BCM)
 DHT_SENSOR = Adafruit_DHT.DHT22
 TH1_PIN = int(os.environ['TH1_PIN'])
 TH2_PIN = int(os.environ['TH2_PIN'])
+OC1_PIN = int(os.environ['OC1_PIN'])
+OC2_PIN = int(os.environ['OC2_PIN'])
 OC3_PIN = int(os.environ['OC3_PIN'])
 
 GPIO.setup(TH1_PIN, GPIO.IN)
 GPIO.setup(TH2_PIN, GPIO.IN)
+GPIO.setup(OC1_PIN, GPIO.IN)
+GPIO.setup(OC2_PIN, GPIO.IN)
 GPIO.setup(OC3_PIN, GPIO.IN)
 
 def read_th(pin):
@@ -28,15 +32,27 @@ def read_th(pin):
 
 # True if detect magnetic
 def read_oc(pin):
-  return GPIO.input(pin) == 0
+  value = GPIO.input(pin) == 0
+
+  print('OC pin ' + str(pin) + ' value ' + str(value))
+
+  return value
 
 def read():
+    chickenDoorStatus = 'OPEN (PARTIAL)'
+
+    if read(OC1_PIN):
+      chickenDoorStatus = 'CLOSED'
+
+    if read(OC2_PIN):
+      chickenDoorStatus = 'OPEN (TOTAL)'
+
     return {
       **read_th(TH1_PIN),
       'outside': read_th(TH2_PIN),
       # Doors can be "CLOSED (LOCKED)", "CLOSED (UNLOCKED)", "CLOSED", "OPEN", "OPEN (PARTIAL)", "OPEN (TOTAL)"
       'humanDoorStatus': 'CLOSED' if read_oc(OC3_PIN) else 'OPEN'
-      #'chickenDoorStatus': 
+      #'chickenDoorStatus':
     }
 
 class Handler(http.server.SimpleHTTPRequestHandler):
