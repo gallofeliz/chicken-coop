@@ -51,8 +51,8 @@ def read():
       **read_th(TH1_PIN),
       'outside': read_th(TH2_PIN),
       # Doors can be "CLOSED (LOCKED)", "CLOSED (UNLOCKED)", "CLOSED", "OPEN", "OPEN (PARTIAL)", "OPEN (TOTAL)"
-      'humanDoorStatus': 'CLOSED' if read_oc(OC3_PIN) else 'OPEN'
-      #'chickenDoorStatus':
+      'humanDoorStatus': 'CLOSED' if read_oc(OC3_PIN) else 'OPEN',
+      'chickenDoorStatus': chickenDoorStatus
     }
 
 class Handler(http.server.SimpleHTTPRequestHandler):
