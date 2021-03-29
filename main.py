@@ -42,6 +42,18 @@ def read_oc(pin):
 def read():
     chickenDoorStatus = 'OPEN (PARTIAL)'
 
+    try:
+      inside = read_th(TH1_PIN)
+    except Exception as inst:
+      logging.exception('ERROR')
+      inside = {}
+
+    try:
+      outside = read_th(TH2_PIN)
+    except Exception as inst:
+      logging.exception('ERROR')
+      outside = {}
+
     if read_oc(OC1_PIN):
       chickenDoorStatus = 'CLOSED'
 
@@ -49,8 +61,8 @@ def read():
       chickenDoorStatus = 'OPEN (TOTAL)'
 
     return {
-      **read_th(TH1_PIN),
-      'outside': read_th(TH2_PIN),
+      **inside,
+      'outside': outside,
       # Doors can be "CLOSED (LOCKED)", "CLOSED (UNLOCKED)", "CLOSED", "OPEN", "OPEN (PARTIAL)", "OPEN (TOTAL)"
       'humanDoorStatus': 'CLOSED' if read_oc(OC3_PIN) else 'OPEN',
       'chickenDoorStatus': chickenDoorStatus
