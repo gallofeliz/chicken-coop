@@ -2,6 +2,7 @@
 
 import socketserver, http.server, json, os, Adafruit_DHT
 import RPi.GPIO as GPIO
+import logging
 port = 8080
 
 GPIO.setmode(GPIO.BCM)
@@ -23,7 +24,7 @@ def read_th(pin):
   humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, pin)
 
   if humidity is None or temperature is None:
-    raise Exception('KO th pin ' + pin)
+    raise Exception('KO th pin ' + str(pin))
 
   return {
     'temperature': round(temperature, 1),
@@ -34,7 +35,7 @@ def read_th(pin):
 def read_oc(pin):
   value = GPIO.input(pin) == 0
 
-  print('OC pin ' + str(pin) + ' value ' + str(value))
+  logging.info('OC pin ' + str(pin) + ' value ' + str(value))
 
   return value
 
@@ -58,7 +59,7 @@ def read():
 class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if (self.path == '/favicon.ico'):
-            print('Skipped')
+            logging.info('Skipped')
             return
 
         try:
@@ -67,19 +68,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Content-type','application/json')
             self.end_headers()
             self.wfile.write(bytes(json.dumps(data), 'utf8'))
-            print('Done ' + str(data))
+            logging.info('Done ' + str(data))
         except Exception as inst:
             self.send_response(500)
             self.send_header('Content-type','text/html')
             self.end_headers()
             self.wfile.write(bytes(str(inst), 'utf8'))
-            print('ERROR ' + str(inst))
+            logging.exception('ERROR')
 
 httpd = socketserver.TCPServer(('', port), Handler)
 try:
-   print('Listening on ' + str(port))
+   logging.info('Listening on ' + str(port))
    httpd.serve_forever()
 except KeyboardInterrupt:
    pass
 httpd.server_close()
-print('Ended')
+logging.info('Ended')
