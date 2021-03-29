@@ -23,7 +23,7 @@ def read_th(pin):
   humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, pin)
 
   if humidity is None or temperature is None:
-    raise Exception('KO')
+    raise Exception('KO th pin ' + pin)
 
   return {
     'temperature': round(temperature, 1),
