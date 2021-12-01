@@ -68,7 +68,7 @@ def read():
       'chickenDoorStatus': chickenDoorStatus
     }
 
-class Handler(http.server.SimpleHTTPRequestHandler):
+class Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         if (self.path == '/favicon.ico'):
             logging.info('Skipped')
