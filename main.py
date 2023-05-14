@@ -9,7 +9,6 @@ GPIO.setmode(GPIO.BCM)
 
 DHT_SENSOR = Adafruit_DHT.DHT22
 TH1_PIN = int(os.environ['TH1_PIN'])
-TH2_PIN = int(os.environ['TH2_PIN'])
 OC1_PIN = int(os.environ['OC1_PIN'])
 OC2_PIN = int(os.environ['OC2_PIN'])
 OC3_PIN = int(os.environ['OC3_PIN'])
@@ -48,12 +47,6 @@ def read():
       logging.exception('ERROR')
       inside = {}
 
-    try:
-      outside = read_th(TH2_PIN)
-    except Exception as inst:
-      logging.exception('ERROR')
-      outside = {}
-
     if read_oc(OC1_PIN):
       chickenDoorStatus = 'CLOSED'
 
@@ -62,7 +55,6 @@ def read():
 
     return {
       **inside,
-      'outside': outside,
       # Doors can be "CLOSED (LOCKED)", "CLOSED (UNLOCKED)", "CLOSED", "OPEN", "OPEN (PARTIAL)", "OPEN (TOTAL)"
       'humanDoorStatus': 'CLOSED' if read_oc(OC3_PIN) else 'OPEN',
       'chickenDoorStatus': chickenDoorStatus
