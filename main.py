@@ -14,7 +14,6 @@ OC2_PIN = int(os.environ['OC2_PIN'])
 OC3_PIN = int(os.environ['OC3_PIN'])
 
 GPIO.setup(TH1_PIN, GPIO.IN)
-GPIO.setup(TH2_PIN, GPIO.IN)
 GPIO.setup(OC1_PIN, GPIO.IN)
 GPIO.setup(OC2_PIN, GPIO.IN)
 GPIO.setup(OC3_PIN, GPIO.IN)
