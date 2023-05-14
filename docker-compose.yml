@@ -16,4 +16,9 @@ services:
     cap_add:
       - SYS_RAWIO
     privileged: true
-
+    healthcheck:
+      test: ["CMD-SHELL", "wget localhost:8080 -O - -q -T 15 || kill 1"]
+      interval: 30m
+      timeout: 30s
+      retries: 1
+      start_period: 30m
